@@ -20,7 +20,7 @@ fn fetch_headers_for_window() -> Result<(), Box<dyn std::error::Error>> {
 
 fn main() {
     println!("Hello World");
-    let runtime = Runtime::new().unwrap();
+    let rt = Runtime::new().unwrap();
     rt.block_on(async {
         if let Err(err) = fetch_headers_for_window() {
             println!("Error occurred: {:?}", err);

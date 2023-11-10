@@ -1,15 +1,12 @@
 mod requester;
 mod types;
 
-use json2::{JSONRPCClient, SubmitMsgTxArgs, SubmitMsgTxReply};
-use types::{BlockHeadersResponse, GetBlockHeadersByHeightArgs, GetBlockHeadersIDArgs, 
-GetBlockHeadersByStartArgs, SEQTransactionResponse};
-
+use types::{BlockHeadersResponse, GetBlockHeadersByHeightArgs, GetBlockHeadersIDArgs, GetBlockHeadersByStartArgs, SEQTransactionResponse, GetBlockTransactionsByNamespaceArgs};
 use context::Context;
-use std::net::Url;
+use reqwest::Url;
 
 pub struct JSONRPCClient {
-    requester: JSONRPCClient,
+    requester: Box<JSONRPCClient>,
     network_id: u32,
     chain_id: String,
 }
@@ -18,7 +15,7 @@ impl JSONRPCClient {
     pub fn new(uri: &str, network_id: u32, chain_id: String) -> Result<Self, Box<dyn
     std::error::Error>> {
         let uri = Url::parse(uri)?;
-        let requester = JSONRPCClient::new(uri, "tokenvm")?;
+        let requester = requester::EndpointRequester::new(uri, "tokenvm")?;
         Ok(Self {
             requester,
             network_id,

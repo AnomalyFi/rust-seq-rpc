@@ -6,8 +6,6 @@ use serde::{Serialize, Deserialize};
 use serde_json::json;
 use tokio::time::{timeout, Duration};
 
-use rpc::json2::ClientCodec;
-
 struct Options {
     headers: http::HeaderMap,
     query_params:HashMap<String, String>,

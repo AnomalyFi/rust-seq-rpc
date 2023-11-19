@@ -1,13 +1,15 @@
-use bytes::Bytes;
+// use bytes::Bytes;
 use std::collections::HashMap;
 use std::error::Error;
-use::reqwest::{Client, Method, Url, header};
+use reqwest::{Client, Url, header};
 use serde::{Serialize, Deserialize};
 use serde_json::json;
 use tokio::time::{timeout, Duration};
+use http::HeaderMap;
+use std::str::FromStr;
 
 struct Options {
-    headers: http::HeaderMap,
+    headers: HeaderMap,
     query_params:HashMap<String, String>,
 }
 
@@ -20,7 +22,7 @@ impl Options {
     }
 
     pub fn with_header(mut self, key: &str, val: &str) -> Self {
-        self.headers.insert(key.parse().unwrap(), val.parse().unwrap());
+        self.headers.insert(key.parse::<F>().unwrap(), val.parse().unwrap());
         self
     }
     pub fn with_query_params(mut self, key: &str, val: &str) -> Self {
@@ -44,7 +46,7 @@ impl EndpointRequester {
         }
     }
 
-    pub async fn send_request<T: Serialize, R: Deserialize<'_>>(
+    pub async fn send_request<T: Serialize + ?Sized, R: Deserialize<'_>>(
         &self,
         method: &str,
         params: &T,
@@ -71,11 +73,11 @@ impl EndpointRequester {
             let status = response.status();
 
             if !status.is_success() {
-                return Err("format!"("recieved status code: {}", status).into());
+                return Err(("recieved status code: {}", status).into());
             }
 
-            let response_body: serde_json::Value = response.json().await?;
-            let result: R = serde_json::from_value(response_body["result"].clone())?;
+            let response_body: Value = response.json().await?;
+            let result: R = from_value(response_body["result"].clone())?;
 
             Ok (result)
     }

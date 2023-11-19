@@ -1,12 +1,13 @@
-mod requester;
-mod types;
+// mod requester;
+// mod types;
 
-use types::{BlockHeadersResponse, GetBlockHeadersByHeightArgs, GetBlockHeadersIDArgs, GetBlockHeadersByStartArgs, SEQTransactionResponse, GetBlockTransactionsByNamespaceArgs};
+use crate::types::{BlockHeadersResponse, GetBlockHeadersByHeightArgs, GetBlockHeadersIDArgs, GetBlockHeadersByStartArgs, SEQTransactionResponse, GetBlockTransactionsByNamespaceArgs};
+use crate::requester::requester::EndpointRequester;
 use context::Context;
 use reqwest::Url;
 
 pub struct JSONRPCClient {
-    requester: Box<JSONRPCClient>,
+    requester: EndpointRequester,
     network_id: u32,
     chain_id: String,
 }
@@ -15,7 +16,7 @@ impl JSONRPCClient {
     pub fn new(uri: &str, network_id: u32, chain_id: String) -> Result<Self, Box<dyn
     std::error::Error>> {
         let uri = Url::parse(uri)?;
-        let requester = requester::EndpointRequester::new(uri, "tokenvm")?;
+        let requester = EndpointRequester::new(uri, "tokenvm".to_string());
         Ok(Self {
             requester,
             network_id,
@@ -86,7 +87,7 @@ impl JSONRPCClient {
     ) -> Result<SEQTransactionResponse, Box<dyn std::error::Error>> {
         let args = GetBlockTransactionsByNamespaceArgs { height, namespace };
         let mut resp = SEQTransactionResponse::default();
-        self.requester.send_request(ctx, "getBlockTransactions", &args, &mut resp).await?;
+        self.requester.send_request(ctx, "getBlockTransactions", &args).await?;
         Ok(resp)
     }
 }

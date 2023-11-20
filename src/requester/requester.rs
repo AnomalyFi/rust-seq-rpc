@@ -6,14 +6,16 @@ use serde::{Serialize, Deserialize};
 use serde_json::json;
 use tokio::time::{timeout, Duration};
 use http::HeaderMap;
-use std::str::FromStr;
+// use std::str::FromStr;
+use serde_json::from_value;
+use serde_json::Value;
 
 struct Options {
     headers: HeaderMap,
     query_params:HashMap<String, String>,
 }
 
-impl Options {
+impl<F> Options {
     pub fn new() -> Self {
         Options {
             headers: header::HeaderMap::new(),

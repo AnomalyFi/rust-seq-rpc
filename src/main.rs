@@ -5,7 +5,7 @@ mod types;
 use std::time::{SystemTime, UNIX_EPOCH};
 use tokio::runtime::Runtime;
 use crate::client::jsonrpc_client::JSONRPCClient;
-use context::Context;
+// use context::Context;
 
 
 fn fetch_headers_for_window() -> Result<(), Box<dyn std::error::Error>> {
@@ -16,7 +16,7 @@ fn fetch_headers_for_window() -> Result<(), Box<dyn std::error::Error>> {
 
     let start = SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs() as i64 * 1000;
     let end = start - 120 * 1000;
-    let ctx = Context;
+    // let ctx = Context;
     let res = cli?.get_block_headers_by_start(ctx, start, end).await;
 
     println!("{:?}", res.blocks[0]);

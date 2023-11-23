@@ -16,7 +16,7 @@ struct Options {
     query_params:HashMap<String, String>,
 }
 
-impl<F> Options {
+impl Options {
     pub fn new() -> Self {
         Options {
             headers: header::HeaderMap::new(),
@@ -25,7 +25,10 @@ impl<F> Options {
     }
     //stuck on error
     pub fn with_header(mut self, key: &str, val: &str) -> Self {
-        self.headers.insert(key.parse::<F>().unwrap(), val.parse().unwrap());
+        self.headers.insert(
+            key.parse::<http::header::HeaderName>().unwrap(), 
+            http::header::HeaderValue::from_str(val).unwrap()
+        );
         self
     }
     pub fn with_query_params(mut self, key: &str, val: &str) -> Self {

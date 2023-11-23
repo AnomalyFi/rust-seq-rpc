@@ -9,6 +9,7 @@ use http::HeaderMap;
 // use std::str::FromStr;
 use serde_json::from_value;
 use serde_json::Value;
+use serde::de::DeserializeOwned;
 
 struct Options {
     headers: HeaderMap,
@@ -22,7 +23,7 @@ impl<F> Options {
             query_params: HashMap::new(),
         }
     }
-
+    //stuck on error
     pub fn with_header(mut self, key: &str, val: &str) -> Self {
         self.headers.insert(key.parse::<F>().unwrap(), val.parse().unwrap());
         self
@@ -48,7 +49,7 @@ impl EndpointRequester {
         }
     }
 
-    pub async fn send_request<T: Serialize + ?Sized, R: Deserialize<'_>>(
+    pub async fn send_request<T: Serialize + ?Sized, R: DeserializeOwned>(
         &self,
         method: &str,
         params: &T,

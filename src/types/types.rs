@@ -1,7 +1,7 @@
 use serde:: { Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize)]
-struct BlockInfo {
+pub struct BlockInfo {
     #[serde(rename = "id")]
     block_id: String, 
     #[serde(rename = "timestamp")]
@@ -11,7 +11,7 @@ struct BlockInfo {
 }
 
 #[derive(Serialize, Deserialize)]
-struct BlockHeadersResponse {
+pub struct BlockHeadersResponse {
     #[serde(rename = "from")]
     from: u64,
     #[serde(rename = "blocks")]
@@ -23,7 +23,7 @@ struct BlockHeadersResponse {
 }
 
 #[derive(Serialize, Deserialize)]
-struct SEQTransaction struct {
+pub struct SEQTransaction {
     #[serde(rename = "namespace")]
     namespace: String,
     #[serde(rename = "tx_id")]
@@ -36,7 +36,7 @@ struct SEQTransaction struct {
 
 //TODO need to fix this. Tech debt
 #[derive(Serialize, Deserialize)]
-struct SEQTransactionResponse {
+pub struct SEQTransactionResponse {
     #[serde(rename = "txs")]
     txs: Vec<SEQTransaction>,
     #[serde(rename = "id")]
@@ -44,7 +44,7 @@ struct SEQTransactionResponse {
 }
 
 #[derive(Serialize, Deserialize)]
-struct GetBlockHeadersByHeightArgs {
+pub struct GetBlockHeadersByHeightArgs {
     #[serde(rename = "height")]
     height: u64, 
     #[serde(rename = "end")]
@@ -52,7 +52,7 @@ struct GetBlockHeadersByHeightArgs {
 }
 
 #[derive(Serialize, Deserialize)]
-struct GetBlockHeadersIDArgs {
+pub struct GetBlockHeadersIDArgs {
     #[serde(rename = "id")]
     id: String,
     #[serde(rename = "end")]
@@ -60,7 +60,7 @@ struct GetBlockHeadersIDArgs {
 }
 
 #[derive(Serialize, Deserialize)]
-struct GetBlockHeadersByStartArgs {
+pub struct GetBlockHeadersByStartArgs {
     #[serde(rename = "start")]
     start: i64,
     #[serde(rename = "end")]
@@ -68,13 +68,13 @@ struct GetBlockHeadersByStartArgs {
 }
 
 #[derive(Serialize, Deserialize)]
-struct GetBlockTransactionsArgs {
+pub struct GetBlockTransactionsArgs {
     #[serde(rename = "block_id")]
     id: String,
 }
 
 #[derive(Serialize, Deserialize)]
-struct GetBlockTransactionsByNamespaceArgs {
+pub struct GetBlockTransactionsByNamespaceArgs {
     #[serde(rename = "height")]
     height: u64,
     #[serde(rename = "namespace")]

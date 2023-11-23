@@ -1,10 +1,26 @@
-// mod requester;
-// mod types;
-
-use crate::types::{BlockHeadersResponse, GetBlockHeadersByHeightArgs, GetBlockHeadersIDArgs, GetBlockHeadersByStartArgs, SEQTransactionResponse, GetBlockTransactionsByNamespaceArgs};
+use crate::types::types::*;
 use crate::requester::requester::EndpointRequester;
 use context::Context;
 use reqwest::Url;
+use serde:: { Serialize, Deserialize};
+
+#[derive(Serialize, Deserialize)]
+pub struct SubmitMsgTxArgs {
+    #[serde(rename = "chain_id")]
+    chain_id: String,
+    #[serde(rename = "network_id")]
+    network_id: u32,
+    #[serde(rename = "secondary_chain_id")]
+    secondary_chain_id: Vec<u8>,
+    #[serde(rename = "data")]
+    data: Vec<u8>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct SubmitMsgTxReply {
+    #[serde(rename = "txId")]
+    tx_id: String,
+}
 
 pub struct JSONRPCClient {
     requester: EndpointRequester,

@@ -1,3 +1,5 @@
+
+use std::default::Default;
 use serde:: { Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize)]
@@ -8,6 +10,16 @@ pub struct BlockInfo {
     timestamp: i64,
     #[serde(rename = "l1_head")]
     l1_head: u64,
+}
+
+impl Default for BlockInfo {
+    fn default() -> Self {
+        Self {
+            block_id: String::new(),
+            timestamp: 0,
+            l1_head: 0,
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize)]
@@ -22,6 +34,17 @@ pub struct BlockHeadersResponse {
     next: BlockInfo,
 }
 
+impl Default for BlockHeadersResponse {
+    fn default() -> Self {
+        Self {
+            from: 0,
+            blocks: Vec::new(),
+            prev: BlockInfo::default(),
+            next: BlockInfo::default(),
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize)]
 pub struct SEQTransaction {
     #[serde(rename = "namespace")]
@@ -34,6 +57,17 @@ pub struct SEQTransaction {
     transaction: Vec<u8>
 }
 
+impl Default for SEQTransaction {
+    fn default() -> Self {
+        Self {
+            namespace: String::new(),
+            tx_id: String::new(),
+            index: 0,
+            transaction: Vec::new(),
+        }
+    }
+}
+
 //TODO need to fix this. Tech debt
 #[derive(Serialize, Deserialize)]
 pub struct SEQTransactionResponse {
@@ -41,6 +75,15 @@ pub struct SEQTransactionResponse {
     txs: Vec<SEQTransaction>,
     #[serde(rename = "id")]
     block_id: String,
+}
+
+impl Default for SEQTransactionResponse {
+    fn default() -> Self {
+        Self {
+            txs: Vec::new(),
+            block_id: String::new(),
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize)]
@@ -51,12 +94,30 @@ pub struct GetBlockHeadersByHeightArgs {
     end: i64,
 }
 
+impl Default for GetBlockHeadersByHeightArgs {
+    fn default() -> Self {
+        Self {
+            height: 0,
+            end: 0,
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize)]
 pub struct GetBlockHeadersIDArgs {
     #[serde(rename = "id")]
     id: String,
     #[serde(rename = "end")]
     end: i64,
+}
+
+impl Default for GetBlockHeadersIDArgs {
+    fn default() -> Self {
+        Self {
+            id: String::new(),
+            end: 0,
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize)]
@@ -67,10 +128,27 @@ pub struct GetBlockHeadersByStartArgs {
     end: i64,
 }
 
+impl Default for GetBlockHeadersByStartArgs {
+    fn default() -> Self {
+        Self {
+            start: 0,
+            end: 0,
+        }
+    }
+}
+
 #[derive(Serialize, Deserialize)]
 pub struct GetBlockTransactionsArgs {
     #[serde(rename = "block_id")]
     id: String,
+}
+
+impl Default for GetBlockTransactionsArgs {
+    fn default() -> Self {
+        Self {
+            id: String::new(),
+        }
+    }
 }
 
 #[derive(Serialize, Deserialize)]
@@ -79,4 +157,13 @@ pub struct GetBlockTransactionsByNamespaceArgs {
     height: u64,
     #[serde(rename = "namespace")]
     namespace: String,
+}
+
+impl Default for GetBlockTransactionsByNamespaceArgs {
+    fn default() -> Self {
+        Self {
+            height: 0,
+            namespace: String::new(),
+        }
+    }
 }

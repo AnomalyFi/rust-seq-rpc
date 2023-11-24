@@ -1,8 +1,10 @@
+extern crate context;
 use crate::types::types::*;
-use crate::requester::requester::EndpointRequester;
+use crate::requester::requester::*;
 use context::Context;
 use reqwest::Url;
 use serde:: { Serialize, Deserialize};
+// use tokio::time::Duration;
 
 #[derive(Serialize, Deserialize)]
 pub struct SubmitMsgTxArgs {
@@ -54,8 +56,9 @@ impl JSONRPCClient {
             secondary_chain_id,
             data,
         };
-        let mut resp = SubmitMsgTxReply::default();
-        self.requester.send_request(ctx, "submitMsgTx", &args, &mut resp).await?;
+        let options = Options::new();
+        let mut resp: SubmitMsgTxReply = SubmitMsgTxArgs::default();
+        self.requester.send_request(ctx, "submitMsgTx", &args, &mut resp, options).await?;
         Ok(resp.tx_id)
     }
 
@@ -66,8 +69,9 @@ impl JSONRPCClient {
         end: i64,
     ) -> Result<BlockHeadersResponse, Box<dyn std::error::Error>> {
         let args = GetBlockHeadersByHeightArgs { height, end };
-        let mut resp = BlockHeadersResponse::default();
-        self.requester.send_request(ctx, "getBlockHeadersByHeight", &args, &mut resp).await?;
+        let options = Options::new();
+        let mut resp: BlockHeadersResponse = BlockHeadersResponse::default();
+        self.requester.send_request(ctx, "getBlockHeadersByHeight", &args, &mut resp, options).await?;
         Ok(resp)
     }
 
@@ -78,8 +82,9 @@ impl JSONRPCClient {
         end: i64,
     ) -> Result<BlockHeadersResponse, Box<dyn std::error::Error>> {
         let args = GetBlockHeadersIDArgs { id, end };
-        let mut resp = BlockHeadersResponse::default();
-        self.requester.send_request(ctx, "getBlockHeadersId", &args, &mut resp).await?;
+        let options = Options::new();
+        let mut resp:  BlockHeadersResponse = BlockHeadersResponse::default();
+        self.requester.send_request(ctx, "getBlockHeadersId", &args, &mut resp, options).await?;
         Ok(resp)
     }
 
@@ -90,8 +95,9 @@ impl JSONRPCClient {
         end: i64,
     ) -> Result<BlockHeadersResponse, Box<dyn std::error::Error>> {
         let args = GetBlockHeadersByStartArgs { start, end };
-        let mut resp = BlockHeadersResponse::default();
-        self.requester.send_request(ctx, "getBlockHeadersByStart", &args, &mut resp).await?;
+        let options = Options::new();
+        let mut resp: BlockHeadersResponse = BlockHeadersResponse::default();
+        self.requester.send_request(ctx, "getBlockHeadersByStart", &args, &mut resp, options).await?;
         Ok(resp)
     }
 
@@ -102,8 +108,13 @@ impl JSONRPCClient {
         namespace: String,
     ) -> Result<SEQTransactionResponse, Box<dyn std::error::Error>> {
         let args = GetBlockTransactionsByNamespaceArgs { height, namespace };
-        let mut resp = SEQTransactionResponse::default();
-        self.requester.send_request(ctx, "getBlockTransactions", &args).await?;
+        // let mut resp = SEQTransactionResponse {
+        //     txs: Vec::new(),
+        //     block_id: String::new(),
+        // };
+        let mut resp: SEQTransactionResponse = SEQTransactionResponse::default();
+        let options = Options::new();
+        self.requester.send_request(ctx, "GetBlockTransactionsByNamespace", &args, &mut resp, options).await?;
         Ok(resp)
     }
 }

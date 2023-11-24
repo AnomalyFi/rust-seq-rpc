@@ -1,6 +1,6 @@
 // use bytes::Bytes;
 use std::collections::HashMap;
-use std::error::Error;
+use std::error::Error; 
 use reqwest::{Client, Url, header};
 use serde::{Serialize, Deserialize};
 use serde_json::json;
@@ -10,8 +10,9 @@ use http::HeaderMap;
 use serde_json::from_value;
 use serde_json::Value;
 use serde::de::DeserializeOwned;
+use context::Context;
 
-struct Options {
+pub struct Options {
     headers: HeaderMap,
     query_params:HashMap<String, String>,
 }
@@ -54,37 +55,52 @@ impl EndpointRequester {
 
     pub async fn send_request<T: Serialize + ?Sized, R: DeserializeOwned>(
         &self,
+        ctx: Context,
         method: &str,
         params: &T,
+        reply: &mut R,
         options: Options,
-    ) -> Result<R, Box<dyn Error>> {
+    ) -> Result<(), Box<dyn Error>> {
         let mut uri = self.uri.clone();
-        for (key, val) in options.query_params {
-            uri.query_pairs_mut().append_pair(&key, &val);
+        if let Some(options) = options {
+            for (key, val) in options.query_params {
+                let key_slice = &key[..];
+                let val_slice = &val;
+                uri.query_pairs_mut().append_pair(key_slice, val_slice);
+                // uri.query_pairs_mut().append_pair(&key, &val);
+            }
         }
-        let request_body = json! ({
+
+        let request_body = json!({
             "jsonrpc": "2.0",
+            //concates the name of jsonrpc babse+method
             "method": format!("{}.{}", self.base, method),
-            "params": params, 
+            "params": params,
             "id": "0",
         });
-        let response = timeout(
-            Duration::from_secs(10),
-            self.client.post(uri)
-                .headers(options.headers)
+
+        let timeout_duration = Duration::from_secs(10);
+
+        let response = timeout(timeout_duration, async {
+            self.client
+                .post(uri)
+                .headers(options.headers.clone())
                 .json(&request_body)
                 .send()
-            ).await??;
+                .await
+        })
+        .await??;
 
-            let status = response.status();
+        let status = response.status();
 
-            if !status.is_success() {
-                return Err(("recieved status code: {}", status).into());
-            }
+        if !status.is_success() {
+            let all = response.text().await?;
+            return Err(format!("received status code: {} {} {}", status, all, uri).into());
+        }
 
-            let response_body: Value = response.json().await?;
-            let result: R = from_value(response_body["result"].clone())?;
+        let response_body: Value = response.json().await?;
+        *reply = from_value(response_body["result"].clone())?;
 
-            Ok (result)
+        Ok(())
     }
 }

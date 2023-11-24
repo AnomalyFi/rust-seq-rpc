@@ -31,7 +31,6 @@ impl Options {
     pub fn unwrap(self) -> Self {
         self
     }
-    //stuck on error
     pub fn with_header(mut self, key: &str, val: &str) -> Self {
         self.headers.insert(
             key.parse::<http::header::HeaderName>().unwrap(), 
@@ -88,6 +87,8 @@ impl EndpointRequester {
 
         let timeout_duration = Duration::from_secs(10);
 
+        //need to look into sending a json request using reqwest library or another library because error 
+        //.send_json doesn't exist so i need to make one or find a library that imports sending json requests.
         let response = timeout(timeout_duration, async {
             self.client
                 .post(uri)

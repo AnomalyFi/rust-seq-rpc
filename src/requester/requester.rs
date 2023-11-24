@@ -24,6 +24,13 @@ impl Options {
             query_params: HashMap::new(),
         }
     }
+    pub fn is_some(&self) -> bool {
+        true
+    }
+
+    pub fn unwrap(self) -> Self {
+        self
+    }
     //stuck on error
     pub fn with_header(mut self, key: &str, val: &str) -> Self {
         self.headers.insert(
@@ -62,7 +69,8 @@ impl EndpointRequester {
         options: Options,
     ) -> Result<(), Box<dyn Error>> {
         let mut uri = self.uri.clone();
-        if let Some(options) = options {
+        if options.is_some() {
+            let options = options.unwrap();
             for (key, val) in options.query_params {
                 let key_slice = &key[..];
                 let val_slice = &val;
@@ -70,7 +78,6 @@ impl EndpointRequester {
                 // uri.query_pairs_mut().append_pair(&key, &val);
             }
         }
-
         let request_body = json!({
             "jsonrpc": "2.0",
             //concates the name of jsonrpc babse+method

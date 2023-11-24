@@ -2,7 +2,8 @@
 use std::default::Default;
 use serde:: { Serialize, Deserialize};
 
-#[derive(Serialize, Deserialize)]
+
+#[derive(Serialize, Deserialize, Debug)]
 pub struct BlockInfo {
     #[serde(rename = "id")]
     block_id: String, 
@@ -32,6 +33,12 @@ pub struct BlockHeadersResponse {
     prev: BlockInfo,
     #[serde(rename = "next")]
     next: BlockInfo,
+}
+
+impl BlockHeadersResponse {
+    pub fn get_blocks(&self) -> &Vec<BlockInfo> {
+        &self.blocks
+    }
 }
 
 impl Default for BlockHeadersResponse {

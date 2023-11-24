@@ -17,11 +17,29 @@ pub struct SubmitMsgTxArgs {
     #[serde(rename = "data")]
     data: Vec<u8>,
 }
+impl Default for SubmitMsgTxArgs {
+    fn default() -> Self {
+        Self {
+            chain_id: String::new(),
+            network_id: 0,
+            secondary_chain_id: Vec::new(),
+            data: Vec::new(),
+        }
+    }
+}
 
 #[derive(Serialize, Deserialize)]
 pub struct SubmitMsgTxReply {
     #[serde(rename = "txId")]
     tx_id: String,
+}
+
+impl Default for SubmitMsgTxReply {
+    fn default() -> Self {
+        Self {
+            tx_id: String::new(),
+        }
+    }
 }
 
 pub struct JSONRPCClient {
@@ -57,7 +75,7 @@ impl JSONRPCClient {
             data,
         };
         let options = Options::new();
-        let mut resp: SubmitMsgTxReply = SubmitMsgTxArgs::default();
+        let mut resp: SubmitMsgTxReply = SubmitMsgTxReply::default();
         self.requester.send_request(ctx, "submitMsgTx", &args, &mut resp, options).await?;
         Ok(resp.tx_id)
     }

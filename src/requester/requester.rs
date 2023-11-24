@@ -85,8 +85,7 @@ impl EndpointRequester {
             self.client
                 .post(uri)
                 .headers(options.headers.clone())
-                .json(&request_body)
-                .send()
+                .send_json(&request_body)
                 .await
         })
         .await??;

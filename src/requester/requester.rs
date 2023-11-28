@@ -6,11 +6,12 @@ use serde::{Serialize, Deserialize};
 use serde_json::json;
 use tokio::time::{timeout, Duration};
 use http::HeaderMap;
-// use std::str::FromStr;
+use async_trait::async_trait;
 use serde_json::from_value;
 use serde_json::Value;
 use serde::de::DeserializeOwned;
 
+#[derive(Clone)]
 pub struct Options {
     headers: HeaderMap,
     query_params:HashMap<String, String>,
@@ -43,6 +44,20 @@ impl Options {
     }
 }
 
+#[async_trait]
+pub trait JsonReq {
+    async fn send_json<T: Serialize + Send + Sync>(self, value: T) -> reqwest::Result<reqwest::Response>;
+}
+
+#[async_trait]
+impl JsonReq for RequestBuilder {
+    async fn send_json<T: Serialize + Send + Sync>(self, value: T) -> reqwest::Result<reqwest::Response> {
+        self.header(reqwest::header::CONTENT_TYPE, "application/json")
+            .body(serde_json::to_string(&value).unwrap())
+            .send().await
+    }
+}
+
 pub struct EndpointRequester {
     client: Client,
     uri: Url,
@@ -67,45 +82,43 @@ impl EndpointRequester {
     ) -> Result<(), Box<dyn Error>> {
         let mut uri = self.uri.clone();
         if options.is_some() {
-            let options = options.unwrap();
+            let options_clone = options.clone();
+            let options = options_clone.unwrap();
             for (key, val) in options.query_params {
                 let key_slice = &key[..];
                 let val_slice = &val;
                 uri.query_pairs_mut().append_pair(key_slice, val_slice);
-                // uri.query_pairs_mut().append_pair(&key, &val);
             }
         }
         let request_body = json!({
             "jsonrpc": "2.0",
-            //concates the name of jsonrpc babse+method
             "method": format!("{}.{}", self.base, method),
             "params": params,
             "id": "0",
         });
-
+    
         let timeout_duration = Duration::from_secs(10);
-
-        //need to look into sending a json request using reqwest library or another library because error 
-        //.send_json doesn't exist so i need to make one or find a library that imports sending json requests.
+    
         let response = timeout(timeout_duration, async {
             self.client
-                .post(uri)
+                .post(uri.clone())
                 .headers(options.headers.clone())
-                .send_json(&request_body)
+                .send_json(request_body.clone())
                 .await
         })
         .await??;
-
+    
         let status = response.status();
-
+    
         if !status.is_success() {
             let all = response.text().await?;
             return Err(format!("received status code: {} {} {}", status, all, uri).into());
         }
-
+    
         let response_body: Value = response.json().await?;
         *reply = from_value(response_body["result"].clone())?;
-
+    
         Ok(())
     }
+    
 }

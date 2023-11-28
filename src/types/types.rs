@@ -96,16 +96,16 @@ impl Default for SEQTransactionResponse {
 #[derive(Serialize, Deserialize)]
 pub struct GetBlockHeadersByHeightArgs {
     #[serde(rename = "height")]
-    height: u64, 
+    pub height: u64, 
     #[serde(rename = "end")]
-    end: i64,
+    pub end: i64,
 }
 
 impl Default for GetBlockHeadersByHeightArgs {
     fn default() -> Self {
         Self {
-            height: 0,
-            end: 0,
+             height: 0,
+             end: 0,
         }
     }
 }
@@ -113,16 +113,16 @@ impl Default for GetBlockHeadersByHeightArgs {
 #[derive(Serialize, Deserialize)]
 pub struct GetBlockHeadersIDArgs {
     #[serde(rename = "id")]
-    id: String,
+    pub id: String,
     #[serde(rename = "end")]
-    end: i64,
+    pub end: i64,
 }
 
 impl Default for GetBlockHeadersIDArgs {
     fn default() -> Self {
         Self {
-            id: String::new(),
-            end: 0,
+             id: String::new(),
+             end: 0,
         }
     }
 }
@@ -130,16 +130,16 @@ impl Default for GetBlockHeadersIDArgs {
 #[derive(Serialize, Deserialize)]
 pub struct GetBlockHeadersByStartArgs {
     #[serde(rename = "start")]
-    start: i64,
+    pub start: i64,
     #[serde(rename = "end")]
-    end: i64,
+    pub end: i64,
 }
 
 impl Default for GetBlockHeadersByStartArgs {
     fn default() -> Self {
         Self {
-            start: 0,
-            end: 0,
+             start: 0,
+             end: 0,
         }
     }
 }
@@ -161,9 +161,9 @@ impl Default for GetBlockTransactionsArgs {
 #[derive(Serialize, Deserialize)]
 pub struct GetBlockTransactionsByNamespaceArgs {
     #[serde(rename = "height")]
-    height: u64,
+    pub height: u64,
     #[serde(rename = "namespace")]
-    namespace: String,
+    pub namespace: String,
 }
 
 impl Default for GetBlockTransactionsByNamespaceArgs {

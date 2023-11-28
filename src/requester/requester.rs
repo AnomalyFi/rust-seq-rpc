@@ -1,7 +1,7 @@
 // use bytes::Bytes;
 use std::collections::HashMap;
 use std::error::Error; 
-use reqwest::{Client, Url, header};
+use reqwest::{Client, Url, RequestBuilder, header};
 use serde::{Serialize, Deserialize};
 use serde_json::json;
 use tokio::time::{timeout, Duration};
@@ -10,7 +10,6 @@ use http::HeaderMap;
 use serde_json::from_value;
 use serde_json::Value;
 use serde::de::DeserializeOwned;
-use context::Context;
 
 pub struct Options {
     headers: HeaderMap,
@@ -61,7 +60,6 @@ impl EndpointRequester {
 
     pub async fn send_request<T: Serialize + ?Sized, R: DeserializeOwned>(
         &self,
-        ctx: Context,
         method: &str,
         params: &T,
         reply: &mut R,

@@ -4,19 +4,16 @@ mod types;
 
 use std::time::{SystemTime, UNIX_EPOCH};
 use tokio::runtime::Runtime;
-use context::Context;
 use crate::client::jsonrpc_client::JSONRPCClient;
 
 
 async fn fetch_headers() -> Result<(), Box<dyn std::error::Error>> {
     let id = "2qMoscnJNq7h9XkLzWBGdFmvSMhnctXfHbiifQSfNN7shyA8SR";
     let url_new = "http://127.0.0.1:41887/ext/bc/2qMoscnJNq7h9XkLzWBGdFmvSMhnctXfHbiifQSfNN7shyA8SR";
-    //struggling with context in rust, cant seem to find the docs for context therefore struggling to include in var res
-    // let ctx = Context::background(); 
     let cli = JSONRPCClient::new(url_new, 1337, id.to_string());
     let start = SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs() as i64 * 1000;
     let end = start - 120 * 1000;
-    let res = cli?.get_block_headers_by_start(ctx, start, end).await?;
+    let res = cli?.get_block_headers_by_start(start, end).await?;
 
     println!("{:?}", res.get_blocks()[0]);
 

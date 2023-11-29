@@ -39,6 +39,7 @@ impl Default for SubmitMsgTxReply {
     }
 }
 
+#[derive(Debug)]
 pub struct JSONRPCClient {
     requester: EndpointRequester,
     network_id: u32,
@@ -106,9 +107,11 @@ impl JSONRPCClient {
         end: i64,
     ) -> Result<BlockHeadersResponse, Box<dyn std::error::Error>> {
         let args = GetBlockHeadersByStartArgs { start, end };
+        println!("Args: {:?}", args);
         let options = Options::new();
         let mut resp: BlockHeadersResponse = BlockHeadersResponse::default();
         self.requester.send_request("getBlockHeadersByStart", &args, &mut resp, options).await?;
+        println!("Response: {:?}", resp);
         Ok(resp)
     }
 

@@ -58,6 +58,7 @@ impl JsonReq for RequestBuilder {
     }
 }
 
+#[derive(Debug)]
 pub struct EndpointRequester {
     client: Client,
     uri: Url,

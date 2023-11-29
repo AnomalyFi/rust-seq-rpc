@@ -23,7 +23,7 @@ impl Default for BlockInfo {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct BlockHeadersResponse {
     #[serde(rename = "from")]
     from: u64,
@@ -127,7 +127,7 @@ impl Default for GetBlockHeadersIDArgs {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct GetBlockHeadersByStartArgs {
     #[serde(rename = "start")]
     pub start: i64,

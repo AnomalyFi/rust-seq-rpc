@@ -50,7 +50,9 @@ impl JSONRPCClient {
     pub fn new(uri: &str, network_id: u32, chain_id: String) -> Result<Self, Box<dyn
     std::error::Error>> {
         let uri = Url::parse(uri)?;
+        println!("uri: {:?}", uri);
         let requester = EndpointRequester::new(uri, "tokenvm".to_string());
+        println!("requester: {:?}", requester);
         Ok(Self {
             requester,
             network_id,

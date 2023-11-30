@@ -106,6 +106,7 @@ impl JSONRPCClient {
         start: i64,
         end: i64,
     ) -> Result<BlockHeadersResponse, Box<dyn std::error::Error>> {
+        //failing in args since line 111 won't print in console.
         let args = GetBlockHeadersByStartArgs { start, end };
         println!("Args: {:?}", args);
         let options = Options::new();

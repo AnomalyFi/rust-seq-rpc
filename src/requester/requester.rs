@@ -73,7 +73,9 @@ impl EndpointRequester {
             base,
         }
     }
-
+    //this file could be wrong but i don't think it is since the logic is similar. 
+    //If you look at the error message you'll see what each client, uri, and base prints.
+    //will take a more in depth look after classes/hw/projects tn 11/30.
     pub async fn send_request<T: Serialize + ?Sized, R: DeserializeOwned>(
         &self,
         method: &str,
@@ -117,7 +119,8 @@ impl EndpointRequester {
         }
     
         let response_body: Value = response.json().await?;
-        *reply = from_value(response_body["result"].clone())?;
+        let result_value = response_body["result"].clone();
+        *reply = from_value(result_value)?;
     
         Ok(())
     }

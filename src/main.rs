@@ -10,11 +10,11 @@ use std::io;
 async fn fetch_headers(id: String, url_new: String) -> Result<(), Box<dyn std::error::Error>> {
     //error is in cli when it calls JSONRPClient 
     let cli = JSONRPCClient::new(&url_new, 1337, id);
-    println!("CLI: {:?}", cli);
+    // println!("CLI: {:?}", cli);
     let start = SystemTime::now().duration_since(UNIX_EPOCH)?.as_secs() as i64 * 1000;
-    println!("Start: {:?}", start);
+    // println!("Start: {:?}", start);
     let end = start - 120 * 1000;
-    println!("End: {:?}", end);
+    // println!("End: {:?}", end);
     let res = match cli?.get_block_headers_by_start(start, end).await {
         Ok(res) => res,
         Err(err) => return Err(err.into()),

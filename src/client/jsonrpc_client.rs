@@ -56,7 +56,7 @@ impl JSONRPCClient {
         // println!("token: {:?}", token);
         let parsed_token = Url::parse(&token)?;
         let requester = EndpointRequester::new(parsed_token, "tokenvm".to_string());
-        println!("requester: {:?}", requester);
+        // println!("requester: {:?}", requester);
         Ok(Self {
             requester,
             network_id,
@@ -120,7 +120,7 @@ impl JSONRPCClient {
         let mut resp: BlockHeadersResponse = BlockHeadersResponse::default();
         // println!("resp: {:?}", resp);
         self.requester.send_request("getBlockHeadersByStart", &args, &mut resp, options).await?;
-        println!("Response: {:?}", resp);
+        // println!("Response: {:?}", resp);
         Ok(resp)
     }
 

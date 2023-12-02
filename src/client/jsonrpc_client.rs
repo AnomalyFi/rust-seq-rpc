@@ -1,6 +1,7 @@
 use crate::types::types::*;
 use crate::requester::requester::*;
 use reqwest::Url;
+// use url::Url;
 use serde:: { Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize)]
@@ -49,9 +50,12 @@ pub struct JSONRPCClient {
 impl JSONRPCClient {
     pub fn new(uri: &str, network_id: u32, chain_id: String) -> Result<Self, Box<dyn
     std::error::Error>> {
-        let uri = Url::parse(uri)?;
-        println!("uri: {:?}", uri);
-        let requester = EndpointRequester::new(uri, "tokenvm".to_string());
+        // println!("uri: {:?}", uri);
+        let uri = Url::parse(uri)?.to_string();
+        let token = uri.clone() + "/tokenapi";
+        // println!("token: {:?}", token);
+        let parsed_token = Url::parse(&token)?;
+        let requester = EndpointRequester::new(parsed_token, "tokenvm".to_string());
         println!("requester: {:?}", requester);
         Ok(Self {
             requester,
@@ -110,9 +114,11 @@ impl JSONRPCClient {
     ) -> Result<BlockHeadersResponse, Box<dyn std::error::Error>> {
         //failing in args since line 111 won't print in console.
         let args = GetBlockHeadersByStartArgs { start, end };
-        println!("Args: {:?}", args);
+        // println!("Args: {:?}", args);
         let options = Options::new();
+        // println!("Options: {:?}", options);
         let mut resp: BlockHeadersResponse = BlockHeadersResponse::default();
+        // println!("resp: {:?}", resp);
         self.requester.send_request("getBlockHeadersByStart", &args, &mut resp, options).await?;
         println!("Response: {:?}", resp);
         Ok(resp)

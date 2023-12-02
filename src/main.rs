@@ -19,7 +19,7 @@ async fn fetch_headers(id: String, url_new: String) -> Result<(), Box<dyn std::e
         Ok(res) => res,
         Err(err) => return Err(err.into()),
     };
-    println!("Res: {:?}", res);
+    // println!("Res: {:?}", res);
     
     println!("{:?}", res.get_blocks()[0]);
 
@@ -40,7 +40,7 @@ fn main() {
     let rt = Runtime::new().unwrap();
     rt.block_on(async {
         if let Err(err) = fetch_headers(id.trim().to_string(), url_new.trim().to_string()).await {
-            println!("fetch_header error occurred: {:?}", err);
+            println!("fetch_headers error occurred: {:?}", err);
         }
     });
 }

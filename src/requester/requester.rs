@@ -11,7 +11,7 @@ use serde_json::from_value;
 use serde_json::Value;
 use serde::de::DeserializeOwned;
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct Options {
     headers: HeaderMap,
     query_params:HashMap<String, String>,

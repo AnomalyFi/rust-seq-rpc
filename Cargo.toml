@@ -2,6 +2,7 @@
 name = "nodekit_seq_sdk"
 version = "0.1.0"
 edition = "2021"
+author = ["Ricardo"]
 
 [[bin]]
 name = "nodekit_seq_sdk"

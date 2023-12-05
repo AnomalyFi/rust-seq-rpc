@@ -1,7 +1,6 @@
 use crate::types::types::*;
 use crate::requester::requester::*;
 use reqwest::Url;
-// use url::Url;
 use serde:: { Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize)]
@@ -50,13 +49,10 @@ pub struct JSONRPCClient {
 impl JSONRPCClient {
     pub fn new(uri: &str, network_id: u32, chain_id: String) -> Result<Self, Box<dyn
     std::error::Error>> {
-        // println!("uri: {:?}", uri);
         let uri = Url::parse(uri)?.to_string();
         let token = uri.clone() + "/tokenapi";
-        // println!("token: {:?}", token);
         let parsed_token = Url::parse(&token)?;
         let requester = EndpointRequester::new(parsed_token, "tokenvm".to_string());
-        // println!("requester: {:?}", requester);
         Ok(Self {
             requester,
             network_id,
@@ -112,15 +108,10 @@ impl JSONRPCClient {
         start: i64,
         end: i64,
     ) -> Result<BlockHeadersResponse, Box<dyn std::error::Error>> {
-        //failing in args since line 111 won't print in console.
         let args = GetBlockHeadersByStartArgs { start, end };
-        // println!("Args: {:?}", args);
         let options = Options::new();
-        // println!("Options: {:?}", options);
         let mut resp: BlockHeadersResponse = BlockHeadersResponse::default();
-        // println!("resp: {:?}", resp);
         self.requester.send_request("getBlockHeadersByStart", &args, &mut resp, options).await?;
-        // println!("Response: {:?}", resp);
         Ok(resp)
     }
 
@@ -130,10 +121,6 @@ impl JSONRPCClient {
         namespace: String,
     ) -> Result<SEQTransactionResponse, Box<dyn std::error::Error>> {
         let args = GetBlockTransactionsByNamespaceArgs { height, namespace };
-        // let mut resp = SEQTransactionResponse {
-        //     txs: Vec::new(),
-        //     block_id: String::new(),
-        // };
         let mut resp: SEQTransactionResponse = SEQTransactionResponse::default();
         let options = Options::new();
         self.requester.send_request("GetBlockTransactionsByNamespace", &args, &mut resp, options).await?;

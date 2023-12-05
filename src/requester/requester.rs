@@ -1,4 +1,3 @@
-// use bytes::Bytes;
 use std::collections::HashMap;
 use std::error::Error; 
 use reqwest::{Client, Url, RequestBuilder, header};
@@ -24,11 +23,9 @@ impl Options {
             query_params: HashMap::new(),
         }
     }
-    //added to resolve errors as rustc --explain (error number) suggested
     pub fn is_some(&self) -> bool {
         true
     }
-    //added to resolve errors as rustc --explain (error number) suggested
     pub fn unwrap(self) -> Self {
         self
     }
@@ -45,7 +42,6 @@ impl Options {
     }
 }
 
-//'JsonReq' to send the json data. had to create in order for send_json() to execute below in send_request method
 #[async_trait]
 pub trait JsonReq {
     async fn send_json<T: Serialize + Send + Sync>(self, value: T) -> reqwest::Result<reqwest::Response>;
@@ -55,20 +51,14 @@ pub trait JsonReq {
 #[async_trait]
 impl JsonReq for RequestBuilder {
     async fn send_json<T: Serialize + Send + Sync>(self, value: T) -> reqwest::Result<reqwest::Response> {
-        //header sets content type to be application/json so request 
-        //is known to be carrying json data.
         self.header(reqwest::header::CONTENT_TYPE, "application/json")
-            //converts type T value, which implements Serialize trait, into a JSON string rep.
             .body(serde_json::to_string(&value).unwrap())
-            //sends the request we created
             .send().await
     }
 }
 
-//holds info for making JSON RPC requests.
 #[derive(Debug)]
 pub struct EndpointRequester {
-    //uses reqwest lib 
     client: Client,
     uri: Url,
     base: String,
@@ -82,35 +72,21 @@ impl EndpointRequester {
             base,
         }
     }
-    //this file could be wrong but i don't think it is since the logic is similar. 
-    //If you look at the error message you'll see what each client, uri, and base prints.
-    //will take a more in depth look after classes/hw/projects tn 11/30.
 
-    //handles sending JSON RPC requests.
     pub async fn send_request<T: Serialize + ?Sized, R: DeserializeOwned>(
         &self,
-        //name of JSON RPC method to be called
         method: &str,
-        //represents request parameters
         params: &T,
-        //represents response data
         reply: &mut R,
-        //contains extra headers and query params
         options: Options,
     ) -> Result<(), Box<dyn Error>> {
         let mut uri = self.uri.clone();
-        //makes sure that any query parameters provided in the Options object are properly appended to the URI before sending the request. 
-        //this allows for dynamic construction of the request URL with query parameters.
         if options.is_some() {
-            //solution from rust debugger. avoid modifying original obbj directly(bad in rust)
             let options_clone = options.clone();
-            //unwraps value to access query_params field
             let options = options_clone.unwrap();
-            //loop over query_params, extract key/val pair
             for (key, val) in options.query_params {
                 let key_slice = &key[..];
                 let val_slice = &val;
-                //take the pair to uri query parameters
                 uri.query_pairs_mut().append_pair(key_slice, val_slice);
             }
         }

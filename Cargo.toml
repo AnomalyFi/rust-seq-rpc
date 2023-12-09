@@ -2,7 +2,11 @@
 name = "nodekit_seq_sdk"
 version = "0.1.0"
 edition = "2021"
-author = ["Ricardo"]
+author = ["rikoeldon"]
+license = "MIT OR Apache-2.0"
+keywords = ["jsonrpc", "seq", "sdk"]
+description = "This is a JSON RPC Client for nodekit SEQ without any of the dependencies of AvalancheGo, HyperSDK, or SEQ to ensure compatibility with rollups"
+
 
 [[bin]]
 name = "nodekit_seq_sdk"

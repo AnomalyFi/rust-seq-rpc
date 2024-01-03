@@ -6,11 +6,11 @@ use serde:: { Serialize, Deserialize};
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BlockInfo {
     #[serde(rename = "id")]
-    block_id: String, 
+    pub block_id: String, 
     #[serde(rename = "timestamp")]
-    timestamp: i64,
+    pub timestamp: i64,
     #[serde(rename = "l1_head")]
-    l1_head: u64,
+    pub l1_head: u64,
 }
 
 impl Default for BlockInfo {
@@ -26,13 +26,13 @@ impl Default for BlockInfo {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct BlockHeadersResponse {
     #[serde(rename = "from")]
-    from: u64,
+    pub from: u64,
     #[serde(rename = "blocks")]
-    blocks: Vec<BlockInfo>,
+    pub blocks: Vec<BlockInfo>,
     #[serde(rename = "prev")]
-    prev: BlockInfo,
+    pub prev: BlockInfo,
     #[serde(rename = "next")]
-    next: BlockInfo,
+    pub next: BlockInfo,
 }
 
 impl BlockHeadersResponse {
@@ -55,13 +55,13 @@ impl Default for BlockHeadersResponse {
 #[derive(Serialize, Deserialize)]
 pub struct SEQTransaction {
     #[serde(rename = "namespace")]
-    namespace: String,
+    pub namespace: String,
     #[serde(rename = "tx_id")]
-    tx_id: String,
+    pub tx_id: String,
     #[serde(rename = "tx_index")]
-    index: u64,
+    pub index: u64,
     #[serde(rename = "transaction")]
-    transaction: Vec<u8>
+    pub transaction: Vec<u8>
 }
 
 impl Default for SEQTransaction {
@@ -79,9 +79,9 @@ impl Default for SEQTransaction {
 #[derive(Serialize, Deserialize)]
 pub struct SEQTransactionResponse {
     #[serde(rename = "txs")]
-    txs: Vec<SEQTransaction>,
+    pub txs: Vec<SEQTransaction>,
     #[serde(rename = "id")]
-    block_id: String,
+    pub block_id: String,
 }
 
 impl Default for SEQTransactionResponse {
@@ -147,7 +147,7 @@ impl Default for GetBlockHeadersByStartArgs {
 #[derive(Serialize, Deserialize)]
 pub struct GetBlockTransactionsArgs {
     #[serde(rename = "block_id")]
-    id: String,
+    pub id: String,
 }
 
 impl Default for GetBlockTransactionsArgs {

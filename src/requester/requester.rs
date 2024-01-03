@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::error::Error; 
 use reqwest::{Client, Url, RequestBuilder, header};
-use serde::{Serialize, Deserialize};
+use serde::{Serialize};
 use serde_json::json;
 use tokio::time::{timeout, Duration};
 use http::HeaderMap;
@@ -12,8 +12,8 @@ use serde::de::DeserializeOwned;
 
 #[derive(Clone, Debug)]
 pub struct Options {
-    headers: HeaderMap,
-    query_params:HashMap<String, String>,
+    pub headers: HeaderMap,
+    pub query_params:HashMap<String, String>,
 }
 
 impl Options {
@@ -59,9 +59,9 @@ impl JsonReq for RequestBuilder {
 
 #[derive(Debug)]
 pub struct EndpointRequester {
-    client: Client,
-    uri: Url,
-    base: String,
+    pub client: Client,
+    pub uri: Url,
+    pub base: String,
 }
 
 impl EndpointRequester {

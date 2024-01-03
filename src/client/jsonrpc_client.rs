@@ -41,9 +41,9 @@ impl Default for SubmitMsgTxReply {
 
 #[derive(Debug)]
 pub struct JSONRPCClient {
-    requester: EndpointRequester,
-    network_id: u32,
-    chain_id: String,
+    pub requester: EndpointRequester,
+    pub network_id: u32,
+    pub chain_id: String,
 }
 
 impl JSONRPCClient {

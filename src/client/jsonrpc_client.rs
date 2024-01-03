@@ -6,13 +6,13 @@ use serde:: { Serialize, Deserialize};
 #[derive(Serialize, Deserialize)]
 pub struct SubmitMsgTxArgs {
     #[serde(rename = "chain_id")]
-    chain_id: String,
+    pub chain_id: String,
     #[serde(rename = "network_id")]
-    network_id: u32,
+    pub network_id: u32,
     #[serde(rename = "secondary_chain_id")]
-    secondary_chain_id: Vec<u8>,
+    pub secondary_chain_id: Vec<u8>,
     #[serde(rename = "data")]
-    data: Vec<u8>,
+    pub data: Vec<u8>,
 }
 impl Default for SubmitMsgTxArgs {
     fn default() -> Self {
@@ -28,7 +28,7 @@ impl Default for SubmitMsgTxArgs {
 #[derive(Serialize, Deserialize)]
 pub struct SubmitMsgTxReply {
     #[serde(rename = "txId")]
-    tx_id: String,
+    pub tx_id: String,
 }
 
 impl Default for SubmitMsgTxReply {

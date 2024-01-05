@@ -2,8 +2,7 @@
 use std::default::Default;
 use serde:: { Serialize, Deserialize};
 
-
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct BlockInfo {
     #[serde(rename = "id")]
     pub block_id: String, 
@@ -23,7 +22,7 @@ impl Default for BlockInfo {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct BlockHeadersResponse {
     #[serde(rename = "from")]
     pub from: u64,

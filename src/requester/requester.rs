@@ -1,11 +1,11 @@
 use std::collections::HashMap;
 use std::error::Error; 
-use reqwest::{Client, Url, RequestBuilder, header};
+use reqwest::{Client, Url, RequestBuilder, header, blocking};
+use reqwest::header::HeaderMap;
 use serde::{Serialize};
 use serde_json::json;
 use tokio::time::{timeout, Duration};
-use http::HeaderMap;
-use async_trait::async_trait;
+// use http::header;
 use serde_json::from_value;
 use serde_json::Value;
 use serde::de::DeserializeOwned;
@@ -19,16 +19,16 @@ pub struct Options {
 impl Options {
     pub fn new() -> Self {
         Options {
-            headers: header::HeaderMap::new(),
+            headers: HeaderMap::new(),
             query_params: HashMap::new(),
         }
     }
-    pub fn is_some(&self) -> bool {
-        true
-    }
-    pub fn unwrap(self) -> Self {
-        self
-    }
+    // pub fn is_some(&self) -> bool {
+    //     true
+    // }
+    // pub fn unwrap(self) -> Self {
+    //     self
+    // }
     pub fn with_header(mut self, key: &str, val: &str) -> Self {
         self.headers.insert(
             key.parse::<http::header::HeaderName>().unwrap(), 
@@ -42,24 +42,22 @@ impl Options {
     }
 }
 
-#[async_trait]
-pub trait JsonReq {
-    async fn send_json<T: Serialize + Send + Sync>(self, value: T) -> reqwest::Result<reqwest::Response>;
-}
+// pub trait JsonReq {
+//     fn send_json<T: Serialize + Send + Sync>(self, value: T) -> reqwest::Result<reqwest::blocking::Response>;
+// }
 
 
-#[async_trait]
-impl JsonReq for RequestBuilder {
-    async fn send_json<T: Serialize + Send + Sync>(self, value: T) -> reqwest::Result<reqwest::Response> {
-        self.header(reqwest::header::CONTENT_TYPE, "application/json")
-            .body(serde_json::to_string(&value).unwrap())
-            .send().await
-    }
-}
+// impl JsonReq for RequestBuilder {
+//     fn send_json<T: Serialize + Send + Sync>(self, value: T) -> reqwest::Result<reqwest::blocking::Response> {
+//         self.header(reqwest::header::CONTENT_TYPE, "application/json")
+//             .body(serde_json::to_string(&value).unwrap())
+//             .send()
+//     }
+// }
 
 #[derive(Debug)]
 pub struct EndpointRequester {
-    pub client: Client,
+    pub client: reqwest::blocking::Client,
     pub uri: Url,
     pub base: String,
 }
@@ -67,13 +65,13 @@ pub struct EndpointRequester {
 impl EndpointRequester {
     pub fn new(uri: Url, base: String) -> Self {
         EndpointRequester {
-            client: Client::new(),
+            client: reqwest::blocking::Client::new(),
             uri,
             base,
         }
     }
 
-    pub async fn send_request<T: Serialize + ?Sized, R: DeserializeOwned>(
+    pub fn send_request<T: Serialize + ?Sized, R: DeserializeOwned>(
         &self,
         method: &str,
         params: &T,
@@ -81,10 +79,10 @@ impl EndpointRequester {
         options: Options,
     ) -> Result<(), Box<dyn Error + Send + Sync>> {
         let mut uri = self.uri.clone();
-        if options.is_some() {
-            let options_clone = options.clone();
-            let options = options_clone.unwrap();
-            for (key, val) in options.query_params {
+        if !options.headers.is_empty() || !options.query_params.is_empty() {
+            // let options_clone = options.clone();
+            // let options = options_clone.unwrap();
+            for (key, val) in &options.query_params {
                 let key_slice = &key[..];
                 let val_slice = &val;
                 uri.query_pairs_mut().append_pair(key_slice, val_slice);
@@ -96,26 +94,21 @@ impl EndpointRequester {
             "params": params,
             "id": "0",
         });
-    
-        let timeout_duration = Duration::from_secs(10);
-    
-        let response = timeout(timeout_duration, async {
-            self.client
+        
+        let response = self.client
                 .post(uri.clone())
                 .headers(options.headers.clone())
-                .send_json(request_body.clone())
-                .await
-        })
-        .await??;
-    
+                .json(&request_body)
+                .send()?;
+
         let status = response.status();
     
         if !status.is_success() {
-            let all = response.text().await?;
+            let all = response.text()?;
             return Err(format!("received status code: {} {} {}", status, all, uri).into());
         }
     
-        let response_body: Value = response.json().await?;
+        let response_body: Value = response.json()?;
         let result_value = response_body["result"].clone();
         *reply = from_value(result_value)?;
     

@@ -60,7 +60,7 @@ impl JSONRPCClient {
         })
     }
 
-    pub async fn submit_tx(
+    pub fn submit_tx(
         &self,
         chain_id: String,
         network_id: u32,
@@ -75,11 +75,11 @@ impl JSONRPCClient {
         };
         let options = Options::new();
         let mut resp: SubmitMsgTxReply = SubmitMsgTxReply::default();
-        self.requester.send_request("submitMsgTx", &args, &mut resp, options).await?;
+        let _ = self.requester.send_request("submitMsgTx", &args, &mut resp, options);
         Ok(resp.tx_id)
     }
 
-    pub async fn get_block_headers_by_height(
+    pub fn get_block_headers_by_height(
         &self,
         height: u64,
         end: i64,
@@ -87,11 +87,11 @@ impl JSONRPCClient {
         let args = GetBlockHeadersByHeightArgs { height, end };
         let options = Options::new();
         let mut resp: BlockHeadersResponse = BlockHeadersResponse::default();
-        self.requester.send_request("getBlockHeadersByHeight", &args, &mut resp, options).await?;
+        let _ = self.requester.send_request("getBlockHeadersByHeight", &args, &mut resp, options);
         Ok(resp)
     }
 
-    pub async fn get_block_headers_by_id(
+    pub fn get_block_headers_by_id(
         &self,
         id: String,
         end: i64,
@@ -99,11 +99,11 @@ impl JSONRPCClient {
         let args = GetBlockHeadersIDArgs { id, end };
         let options = Options::new();
         let mut resp:  BlockHeadersResponse = BlockHeadersResponse::default();
-        self.requester.send_request("getBlockHeadersId", &args, &mut resp, options).await?;
+        let _ = self.requester.send_request("getBlockHeadersId", &args, &mut resp, options);
         Ok(resp)
     }
 
-    pub async fn get_block_headers_by_start(
+    pub fn get_block_headers_by_start(
         &self,
         start: i64,
         end: i64,
@@ -111,11 +111,11 @@ impl JSONRPCClient {
         let args = GetBlockHeadersByStartArgs { start, end };
         let options = Options::new();
         let mut resp: BlockHeadersResponse = BlockHeadersResponse::default();
-        self.requester.send_request("getBlockHeadersByStart", &args, &mut resp, options).await?;
+        let _ = self.requester.send_request("getBlockHeadersByStart", &args, &mut resp, options);
         Ok(resp)
     }
 
-    pub async fn get_block_transactions_by_namespace(
+    pub fn get_block_transactions_by_namespace(
         &self,
         height: u64,
         namespace: String,
@@ -123,7 +123,7 @@ impl JSONRPCClient {
         let args = GetBlockTransactionsByNamespaceArgs { height, namespace };
         let mut resp: SEQTransactionResponse = SEQTransactionResponse::default();
         let options = Options::new();
-        self.requester.send_request("GetBlockTransactionsByNamespace", &args, &mut resp, options).await?;
+        let _ = self.requester.send_request("GetBlockTransactionsByNamespace", &args, &mut resp, options);
         Ok(resp)
     }
 }

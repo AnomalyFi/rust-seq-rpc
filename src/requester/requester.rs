@@ -79,7 +79,7 @@ impl EndpointRequester {
         params: &T,
         reply: &mut R,
         options: Options,
-    ) -> Result<(), Box<dyn Error>> {
+    ) -> Result<(), Box<dyn Error + Send + Sync>> {
         let mut uri = self.uri.clone();
         if options.is_some() {
             let options_clone = options.clone();

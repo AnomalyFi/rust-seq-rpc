@@ -48,7 +48,7 @@ pub struct JSONRPCClient {
 
 impl JSONRPCClient {
     pub fn new(uri: &str, network_id: u32, chain_id: String) -> Result<Self, Box<dyn
-    std::error::Error>> {
+    std::error::Error + Send + Sync>> {
         let uri = Url::parse(uri)?.to_string();
         let token = uri.clone() + "/tokenapi";
         let parsed_token = Url::parse(&token)?;
@@ -66,7 +66,7 @@ impl JSONRPCClient {
         network_id: u32,
         secondary_chain_id: Vec<u8>,
         data: Vec<u8>,
-    ) -> Result<String, Box<dyn std::error::Error>> {
+    ) -> Result<String, Box<dyn std::error::Error + Send + Sync>> {
         let args = SubmitMsgTxArgs {
             chain_id,
             network_id,
@@ -83,7 +83,7 @@ impl JSONRPCClient {
         &self,
         height: u64,
         end: i64,
-    ) -> Result<BlockHeadersResponse, Box<dyn std::error::Error>> {
+    ) -> Result<BlockHeadersResponse, Box<dyn std::error::Error + Send + Sync>> {
         let args = GetBlockHeadersByHeightArgs { height, end };
         let options = Options::new();
         let mut resp: BlockHeadersResponse = BlockHeadersResponse::default();
@@ -95,7 +95,7 @@ impl JSONRPCClient {
         &self,
         id: String,
         end: i64,
-    ) -> Result<BlockHeadersResponse, Box<dyn std::error::Error>> {
+    ) -> Result<BlockHeadersResponse, Box<dyn std::error::Error + Send + Sync>> {
         let args = GetBlockHeadersIDArgs { id, end };
         let options = Options::new();
         let mut resp:  BlockHeadersResponse = BlockHeadersResponse::default();
@@ -107,7 +107,7 @@ impl JSONRPCClient {
         &self,
         start: i64,
         end: i64,
-    ) -> Result<BlockHeadersResponse, Box<dyn std::error::Error>> {
+    ) -> Result<BlockHeadersResponse, Box<dyn std::error::Error + Send + Sync>> {
         let args = GetBlockHeadersByStartArgs { start, end };
         let options = Options::new();
         let mut resp: BlockHeadersResponse = BlockHeadersResponse::default();
@@ -119,7 +119,7 @@ impl JSONRPCClient {
         &self,
         height: u64,
         namespace: String,
-    ) -> Result<SEQTransactionResponse, Box<dyn std::error::Error>> {
+    ) -> Result<SEQTransactionResponse, Box<dyn std::error::Error + Send + Sync>> {
         let args = GetBlockTransactionsByNamespaceArgs { height, namespace };
         let mut resp: SEQTransactionResponse = SEQTransactionResponse::default();
         let options = Options::new();

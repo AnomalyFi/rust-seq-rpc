@@ -5,7 +5,6 @@ use reqwest::header::HeaderMap;
 use serde::{Serialize};
 use serde_json::json;
 use tokio::time::{timeout, Duration};
-// use http::header;
 use serde_json::from_value;
 use serde_json::Value;
 use serde::de::DeserializeOwned;
@@ -23,12 +22,7 @@ impl Options {
             query_params: HashMap::new(),
         }
     }
-    // pub fn is_some(&self) -> bool {
-    //     true
-    // }
-    // pub fn unwrap(self) -> Self {
-    //     self
-    // }
+    
     pub fn with_header(mut self, key: &str, val: &str) -> Self {
         self.headers.insert(
             key.parse::<http::header::HeaderName>().unwrap(), 
@@ -41,19 +35,6 @@ impl Options {
         self
     }
 }
-
-// pub trait JsonReq {
-//     fn send_json<T: Serialize + Send + Sync>(self, value: T) -> reqwest::Result<reqwest::blocking::Response>;
-// }
-
-
-// impl JsonReq for RequestBuilder {
-//     fn send_json<T: Serialize + Send + Sync>(self, value: T) -> reqwest::Result<reqwest::blocking::Response> {
-//         self.header(reqwest::header::CONTENT_TYPE, "application/json")
-//             .body(serde_json::to_string(&value).unwrap())
-//             .send()
-//     }
-// }
 
 #[derive(Debug)]
 pub struct EndpointRequester {
@@ -80,8 +61,6 @@ impl EndpointRequester {
     ) -> Result<(), Box<dyn Error + Send + Sync>> {
         let mut uri = self.uri.clone();
         if !options.headers.is_empty() || !options.query_params.is_empty() {
-            // let options_clone = options.clone();
-            // let options = options_clone.unwrap();
             for (key, val) in &options.query_params {
                 let key_slice = &key[..];
                 let val_slice = &val;

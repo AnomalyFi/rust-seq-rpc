@@ -1,6 +1,6 @@
 [package]
 name = "nodekit_seq_sdk"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2021"
 author = ["rikoeldon"]
 license = "MIT OR Apache-2.0"
@@ -12,10 +12,6 @@ repository = "https://github.com/AnomalyFi/rust-seq-rpc"
 [lib]
 name = "nodekit_seq_sdk"
 path = "src/lib.rs"
-
-[[bin]]
-name = "nodekit_seq_sdk"
-path = "src/main.rs"
 
 [dependencies]
 context = "3.0.0"

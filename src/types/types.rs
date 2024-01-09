@@ -51,7 +51,7 @@ impl Default for BlockHeadersResponse {
     }
 }
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct SEQTransaction {
     #[serde(rename = "namespace")]
     pub namespace: String,

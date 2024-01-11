@@ -75,7 +75,7 @@ impl Default for SEQTransaction {
 }
 
 //TODO need to fix this. Tech debt
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct SEQTransactionResponse {
     #[serde(rename = "txs")]
     pub txs: Vec<SEQTransaction>,
@@ -92,7 +92,7 @@ impl Default for SEQTransactionResponse {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct GetBlockHeadersByHeightArgs {
     #[serde(rename = "height")]
     pub height: u64, 
@@ -109,7 +109,7 @@ impl Default for GetBlockHeadersByHeightArgs {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct GetBlockHeadersIDArgs {
     #[serde(rename = "id")]
     pub id: String,
@@ -143,7 +143,7 @@ impl Default for GetBlockHeadersByStartArgs {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct GetBlockTransactionsArgs {
     #[serde(rename = "block_id")]
     pub id: String,
@@ -157,7 +157,7 @@ impl Default for GetBlockTransactionsArgs {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct GetBlockTransactionsByNamespaceArgs {
     #[serde(rename = "height")]
     pub height: u64,

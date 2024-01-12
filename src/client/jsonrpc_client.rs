@@ -123,7 +123,7 @@ impl JSONRPCClient {
         let args = GetBlockTransactionsByNamespaceArgs { height, namespace };
         let mut resp: SEQTransactionResponse = SEQTransactionResponse::default();
         let options = Options::new();
-        let _ = self.requester.send_request("GetBlockTransactionsByNamespace", &args, &mut resp, options);
+        let _ = self.requester.send_request("getBlockTransactionsByNamespace", &args, &mut resp, options);
         Ok(resp)
     }
 }

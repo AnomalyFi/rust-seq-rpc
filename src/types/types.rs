@@ -62,7 +62,7 @@ pub struct SEQTransaction {
     pub tx_id: String,
     #[serde(rename = "tx_index")]
     pub index: u64,
-    #[serde(rename = "transaction")]
+    #[serde(rename = "transaction", with = "serde_bytes_ng")]
     pub transaction: Vec<u8>
 }
 

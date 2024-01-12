@@ -3,7 +3,7 @@ use crate::requester::requester::*;
 use reqwest::Url;
 use serde:: { Serialize, Deserialize};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct SubmitMsgTxArgs {
     #[serde(rename = "chain_id")]
     pub chain_id: String,
@@ -25,7 +25,7 @@ impl Default for SubmitMsgTxArgs {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct SubmitMsgTxReply {
     #[serde(rename = "txId")]
     pub tx_id: String,

@@ -97,7 +97,7 @@ impl EndpointRequester {
         println!("Response body: {:?}", response_body);
         println!("Result value: {:?}", result_value);
 
-        *reply = from_value(result_value)?;
+        *reply = from_value(result_value).unwrap();
         println!("Reply: {:?}", reply);
 
     

@@ -121,6 +121,9 @@ impl JSONRPCClient {
         namespace: String,
     ) -> Result<SEQTransactionResponse, Box<dyn std::error::Error + Send + Sync>> {
         let args = GetBlockTransactionsByNamespaceArgs { height, namespace };
+        println!("args: {:?}",args);
+        println!("args height: {:?}",args.height);
+        println!("args namespace: {:?}", args.namespace);
         let mut resp: SEQTransactionResponse = SEQTransactionResponse::default();
         let options = Options::new();
         let _ = self.requester.send_request("getBlockTransactionsByNamespace", &args, &mut resp, options);

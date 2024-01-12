@@ -81,7 +81,7 @@ impl Default for SEQTransaction {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SEQTransactionResponse {
     #[serde(rename = "txs")]
-    pub txs: Vec<SEQTransaction>,
+    pub txs: Option<Vec<SEQTransaction>>,
     #[serde(rename = "id")]
     pub block_id: String,
 }
@@ -89,7 +89,7 @@ pub struct SEQTransactionResponse {
 impl Default for SEQTransactionResponse {
     fn default() -> Self {
         Self {
-            txs: Vec::new(),
+            txs: None,
             block_id: String::new(),
         }
     }

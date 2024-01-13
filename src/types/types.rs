@@ -10,8 +10,8 @@ pub struct BlockInfo {
     pub timestamp: i64,
     #[serde(rename = "l1_head")]
     pub l1_head: u64,
-    // #[serde(rename = "height")]
-    // pub height: u64,
+    #[serde(rename = "height")]
+    pub height: u64,
 }
 
 impl Default for BlockInfo {
@@ -20,7 +20,7 @@ impl Default for BlockInfo {
             block_id: String::new(),
             timestamp: 0,
             l1_head: 0,
-            // height: 0,
+            height: 0,
         }
     }
 }

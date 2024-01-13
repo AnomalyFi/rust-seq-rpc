@@ -85,9 +85,13 @@ impl JSONRPCClient {
         end: i64,
     ) -> Result<BlockHeadersResponse, Box<dyn std::error::Error + Send + Sync>> {
         let args = GetBlockHeadersByHeightArgs { height, end };
+        println!("args: {:?}",args);
+        println!("args height: {:?}",args.height);
+        println!("args namespace: {:?}", args.end);
         let options = Options::new();
         let mut resp: BlockHeadersResponse = BlockHeadersResponse::default();
         let _ = self.requester.send_request("getBlockHeadersByHeight", &args, &mut resp, options);
+        println!("resp: {:?}", resp);
         Ok(resp)
     }
 

@@ -73,7 +73,6 @@ impl EndpointRequester {
             "params": params,
             "id": "0",
         });
-        println!("Request body: {:?}", request_body);
         
         let response = self.client
                 .post(uri.clone())
@@ -81,21 +80,15 @@ impl EndpointRequester {
                 .json(&request_body)
                 .send()?;
 
-        println!("Response: {:?}", response);
-
         let status = response.status();
     
         if !status.is_success() {
             let all = response.text()?;
-            println!("Status: {:?}", status);
-            println!("Response text: {:?}", all);
             return Err(format!("received status code: {} {} {}", status, all, uri).into());
         }
     
         let response_body: Value = response.json()?;
         let result_value = response_body["result"].clone();
-        println!("Response body: {:?}", response_body);
-        println!("Result value: {:?}", result_value);
 
         *reply = match from_value(result_value) {
             Ok(val) => val,

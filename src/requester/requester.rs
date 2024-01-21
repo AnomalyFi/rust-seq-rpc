@@ -36,7 +36,7 @@ impl Options {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct EndpointRequester {
     pub client: reqwest::blocking::Client,
     pub uri: Url,

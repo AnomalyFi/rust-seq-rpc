@@ -39,7 +39,7 @@ impl Default for SubmitMsgTxReply {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct JSONRPCClient {
     pub requester: EndpointRequester,
     pub network_id: u32,

@@ -18,20 +18,10 @@ This is a JSON RPC Client for SEQ without any of the dependencies of AvalancheGo
 
 ## Methods
 
-## Methods
-
 | Method Name | Structure | Parameters | Return Type |
 |-------------|-----------|------------|-------------|
-| default     | BlockInfo | None       | BlockInfo   |
+| default     | structName | None       | structType   |
 | get_blocks  | BlockHeadersResponse | None | &Vec<BlockInfo> |
-| default     | BlockHeadersResponse | None | BlockHeadersResponse |
-| default     | SEQTransaction | None | SEQTransaction |
-| default     | SEQTransactionResponse | None | SEQTransactionResponse |
-| default     | GetBlockHeadersByHeightArgs | None | GetBlockHeadersByHeightArgs |
-| default     | GetBlockHeadersIDArgs | None | GetBlockHeadersIDArgs |
-| default     | GetBlockHeadersByStartArgs | None | GetBlockHeadersByStartArgs |
-| default     | GetBlockTransactionsArgs | None | GetBlockTransactionsArgs |
-| default     | GetBlockTransactionsByNamespaceArgs | None | GetBlockTransactionsByNamespaceArgs |
 
 ## Description
 

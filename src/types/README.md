@@ -4,31 +4,34 @@ This is a JSON RPC Client for SEQ without any of the dependencies of AvalancheGo
 
 ## Structs
 
-| Struct Name |                         Fields |
-|----------------|                      -------|
-| BlockInfo                       |     block_id: String, timestamp: i64, l1_head: u64, height: u64         |
+| Struct Name | Fields |
+|-------------|--------|
+| BlockInfo | block_id: String, timestamp: i64, l1_head: u64, height: u64 |
+| BlockHeadersResponse | from: u64, blocks: Vec<BlockInfo>, prev: BlockInfo, next: BlockInfo |
+| SEQTransaction | namespace: String, tx_id: String, index: u64, transaction: Vec<u8> |
+| SEQTransactionResponse | txs: Vec<SEQTransaction>, block_id: String |
+| GetBlockHeadersByHeightArgs | height: u64, end: i64 |
+| GetBlockHeadersIDArgs | id: String, end: i64 |
+| GetBlockHeadersByStartArgs | start: i64, end: i64 |
+| GetBlockTransactionsArgs | id: String |
+| GetBlockTransactionsByNamespaceArgs | height: u64, namespace: String |
 
-| BlockHeadersResponse            |     from: u64, blocks: Vec<BlockInfo>, prev: BlockInfo, next: BlockInfo |
-
-| SEQTransaction                  |     namespace: String, tx_id: String, index: u64, transaction: Vec<u8>  |
-
-| SEQTransactionResponse          |     txs: Vec<SEQTransaction>, block_id: String                          |
-
-| GetBlockHeadersByHeightArgs     |     height: u64, end: i64                                               |
-
-| GetBlockHeadersIDArgs           |     id: String, end: i64                                                |
-
-| GetBlockHeadersByStartArgs      |     start: i64, end: i64                                                |
-
-| GetBlockTransactionsArgs        |     id: String                                                          |
-
-| GetBlockTransactionsByNamespaceArgs | height: u64, namespace: String                                      |
+## Methods
 
 ## Methods
 
 | Method Name | Structure | Parameters | Return Type |
 |-------------|-----------|------------|-------------|
+| default     | BlockInfo | None       | BlockInfo   |
 | get_blocks  | BlockHeadersResponse | None | &Vec<BlockInfo> |
+| default     | BlockHeadersResponse | None | BlockHeadersResponse |
+| default     | SEQTransaction | None | SEQTransaction |
+| default     | SEQTransactionResponse | None | SEQTransactionResponse |
+| default     | GetBlockHeadersByHeightArgs | None | GetBlockHeadersByHeightArgs |
+| default     | GetBlockHeadersIDArgs | None | GetBlockHeadersIDArgs |
+| default     | GetBlockHeadersByStartArgs | None | GetBlockHeadersByStartArgs |
+| default     | GetBlockTransactionsArgs | None | GetBlockTransactionsArgs |
+| default     | GetBlockTransactionsByNamespaceArgs | None | GetBlockTransactionsByNamespaceArgs |
 
 ## Description
 

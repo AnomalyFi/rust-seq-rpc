@@ -18,7 +18,7 @@ This is a JSON RPC Client for SEQ without any of the dependencies of AvalancheGo
 
 ## Methods
 
-| Method Name | Structure | Parameters | Return Type |
+| Method Name | Stuct | Parameters | Return Type |
 |-------------|-----------|------------|-------------|
 | default     | structName | None       | structType   |
 | get_blocks  | BlockHeadersResponse | None | &Vec<BlockInfo> |

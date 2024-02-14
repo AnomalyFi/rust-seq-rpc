@@ -74,12 +74,14 @@ This is a JSON RPC Client for SEQ without any of the dependencies of AvalancheGo
 - `end`: The end of the block.
 
 ### GetBlockHeadersByStartArgs
+
 `GetBlockHeadersByStartArgs` is a struct that represents the arguments for getting block headers by start. It has the following fields:
 
 - `start`: The start of the block.
 - `end`: The end of the block.
 
 ### GetBlockTransactionsArgs
+
 `GetBlockTransactionsArgs` is a struct that represents the arguments for getting block transactions. It has the following field:
 
 - `id`: The ID of the block.

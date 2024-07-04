@@ -86,6 +86,29 @@ impl JSONRPCClient {
         Ok(resp.tx_id)
     }
 
+    pub fn submit_transact_tx(
+        &self,
+        chain_id: String,
+        network_id: u32,
+        function_name: String,
+        contract_address: String,
+        input: Vec<u8>,
+    ) -> Result<SubmitTransactTxReply, Box<dyn std::error::Error + Send + Sync>> {
+        let args = SubmitTransactTxArgs {
+            chain_id,
+            network_id,
+            function_name,
+            contract_address,
+            input,
+        };
+        let options = Options::new();
+        let mut resp: SubmitTransactTxReply = SubmitTransactTxReply::default();
+        let _ = self
+            .requester
+            .send_request("submitTransactTx", &args, &mut resp, options);
+        Ok(resp)
+    }
+
     pub fn get_block_headers_by_height(
         &self,
         height: u64,

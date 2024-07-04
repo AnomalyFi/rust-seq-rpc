@@ -76,6 +76,45 @@ impl Default for SEQTransaction {
     }
 }
 
+#[derive(Serialize, Deserialize, Debug)]
+pub struct SubmitTransactTxArgs {
+    #[serde(rename = "chain_id")]
+    pub chain_id: String,
+    #[serde(rename = "network_id")]
+    pub network_id: u32,
+    #[serde(rename = "function_name")]
+    pub function_name: String,
+    #[serde(rename = "contract_address")]
+    pub contract_address: String,
+    #[serde(rename = "input")]
+    pub input: Vec<u8>,
+}
+impl Default for SubmitTransactTxArgs {
+    fn default() -> Self {
+        Self {
+            chain_id: String::new(),
+            network_id: 0,
+            function_name: String::new(),
+            contract_address: String::new(),
+            input: Vec::new(),
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct SubmitTransactTxReply {
+    #[serde(rename = "txId")]
+    pub tx_id: String,
+}
+
+impl Default for SubmitTransactTxReply {
+    fn default() -> Self {
+        Self {
+            tx_id: String::new(),
+        }
+    }
+}
+
 //TODO need to fix this. Tech debt
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SEQTransactionResponse {

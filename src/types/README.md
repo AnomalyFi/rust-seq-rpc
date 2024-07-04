@@ -15,6 +15,8 @@ This is a JSON RPC Client for SEQ without any of the dependencies of AvalancheGo
 | GetBlockHeadersByStartArgs | start: i64, end: i64 |
 | GetBlockTransactionsArgs | id: String |
 | GetBlockTransactionsByNamespaceArgs | height: u64, namespace: String |
+| StorageSlotArgs | address: String, slot: String |
+| StorageSlotResponse | data: Vec< u8 > |
 
 ## Methods
 
@@ -92,3 +94,16 @@ This is a JSON RPC Client for SEQ without any of the dependencies of AvalancheGo
 
 - `height`: The height of the block.
 - `namespace`: The namespace of the block.
+
+### StorageSlotArgs
+
+`StorageSlotArgs` is a struct that represents the arguments for getting data stored at a contracts storage slot. It has the following fields:
+
+- `address`: The address of the smart contract.
+- `slot`: The slot string of the storage slot.
+
+### StorageSlotResponse
+
+`StorageSlotResonse` is a struct that represents response of StorageSlot. It has following fields:
+
+- `data`: The data stored at the storage slot of smart contract.

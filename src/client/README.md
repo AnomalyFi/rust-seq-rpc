@@ -22,7 +22,7 @@ This is a JSON RPC Client for SEQ without any of the dependencies of AvalancheGo
 | get_block_headers_by_id | JSONRPCClient | id: String, end: i64 | Result<BlockHeadersResponse, Box Error> |
 | get_block_headers_by_start | JSONRPCClient | start: i64, end: i64 | Result<BlockHeadersResponse, Box Error> |
 | get_block_transactions_by_namespace | JSONRPCClient | height: u64, namespace: String |Result<SEQTransactionResponse, Box Error> |
-
+| get_storage_slot_data | JSONRPCClient | address_str: String, slot: string | Result<StorageSlotResponse, Box Error> |
 ## Description
 
 ### SubmitMsgTxArgs

@@ -1,11 +1,10 @@
-
+use serde::{Deserialize, Serialize};
 use std::default::Default;
-use serde:: { Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct BlockInfo {
     #[serde(rename = "id")]
-    pub block_id: String, 
+    pub block_id: String,
     #[serde(rename = "timestamp")]
     pub timestamp: i64,
     #[serde(rename = "l1_head")]
@@ -63,7 +62,7 @@ pub struct SEQTransaction {
     #[serde(rename = "tx_index")]
     pub index: u64,
     #[serde(rename = "transaction", with = "serde_bytes_ng")]
-    pub transaction: Vec<u8>
+    pub transaction: Vec<u8>,
 }
 
 impl Default for SEQTransaction {
@@ -98,17 +97,14 @@ impl Default for SEQTransactionResponse {
 #[derive(Serialize, Deserialize, Debug)]
 pub struct GetBlockHeadersByHeightArgs {
     #[serde(rename = "height")]
-    pub height: u64, 
+    pub height: u64,
     #[serde(rename = "end")]
     pub end: i64,
 }
 
 impl Default for GetBlockHeadersByHeightArgs {
     fn default() -> Self {
-        Self {
-             height: 0,
-             end: 0,
-        }
+        Self { height: 0, end: 0 }
     }
 }
 
@@ -123,8 +119,8 @@ pub struct GetBlockHeadersIDArgs {
 impl Default for GetBlockHeadersIDArgs {
     fn default() -> Self {
         Self {
-             id: String::new(),
-             end: 0,
+            id: String::new(),
+            end: 0,
         }
     }
 }
@@ -139,10 +135,7 @@ pub struct GetBlockHeadersByStartArgs {
 
 impl Default for GetBlockHeadersByStartArgs {
     fn default() -> Self {
-        Self {
-             start: 0,
-             end: 0,
-        }
+        Self { start: 0, end: 0 }
     }
 }
 
@@ -154,9 +147,7 @@ pub struct GetBlockTransactionsArgs {
 
 impl Default for GetBlockTransactionsArgs {
     fn default() -> Self {
-        Self {
-            id: String::new(),
-        }
+        Self { id: String::new() }
     }
 }
 
@@ -174,5 +165,45 @@ impl Default for GetBlockTransactionsByNamespaceArgs {
             height: 0,
             namespace: String::new(),
         }
+    }
+}
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct StorageSlotArgs {
+    #[serde(rename = "address")]
+    pub address: String,
+    #[serde(rename = "slot")]
+    pub slot: String,
+}
+
+impl Default for StorageSlotArgs {
+    fn default() -> Self {
+        Self {
+            address: String::new(),
+            slot: String::new(),
+        }
+    }
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct StorageSlotResponse {
+    #[serde(rename = "data", with = "serde_bytes_ng")]
+    pub data: Vec<u8>,
+}
+
+impl Default for StorageSlotResponse {
+    fn default() -> Self {
+        Self { data: Vec::new() }
+    }
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct BlockTransactionArgs {
+    pub data: Vec<u8>,
+}
+
+impl Default for BlockTransactionArgs {
+    fn default() -> Self {
+        Self { data: Vec::new() }
     }
 }

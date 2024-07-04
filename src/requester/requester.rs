@@ -1,18 +1,18 @@
-use std::collections::HashMap;
-use std::error::Error; 
-use reqwest::{Url, Client};
 use reqwest::header::HeaderMap;
-use serde::{Serialize};
+use reqwest::Url;
+use serde::Serialize;
 use serde_json::json;
+use std::collections::HashMap;
+use std::error::Error;
 
+use serde::de::DeserializeOwned;
 use serde_json::from_value;
 use serde_json::Value;
-use serde::de::DeserializeOwned;
 
 #[derive(Clone, Debug)]
 pub struct Options {
     pub headers: HeaderMap,
-    pub query_params:HashMap<String, String>,
+    pub query_params: HashMap<String, String>,
 }
 
 impl Options {
@@ -22,11 +22,11 @@ impl Options {
             query_params: HashMap::new(),
         }
     }
-    
+
     pub fn with_header(mut self, key: &str, val: &str) -> Self {
         self.headers.insert(
-            key.parse::<http::header::HeaderName>().unwrap(), 
-            http::header::HeaderValue::from_str(val).unwrap()
+            key.parse::<http::header::HeaderName>().unwrap(),
+            http::header::HeaderValue::from_str(val).unwrap(),
         );
         self
     }
@@ -73,20 +73,21 @@ impl EndpointRequester {
             "params": params,
             "id": "0",
         });
-        
-        let response = self.client
-                .post(uri.clone())
-                .headers(options.headers.clone())
-                .json(&request_body)
-                .send()?;
+
+        let response = self
+            .client
+            .post(uri.clone())
+            .headers(options.headers.clone())
+            .json(&request_body)
+            .send()?;
 
         let status = response.status();
-    
+
         if !status.is_success() {
             let all = response.text()?;
             return Err(format!("received status code: {} {} {}", status, all, uri).into());
         }
-    
+
         let response_body: Value = response.json()?;
         let result_value = response_body["result"].clone();
 
@@ -96,5 +97,4 @@ impl EndpointRequester {
         };
         Ok(())
     }
-    
 }

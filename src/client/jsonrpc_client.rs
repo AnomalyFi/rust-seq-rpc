@@ -1,7 +1,9 @@
-use crate::types::types::*;
 use crate::requester::requester::*;
+use crate::types::types::*;
 use reqwest::Url;
-use serde:: { Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
+
+const NUM_STATE_KEYS: u64 = 1024;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SubmitMsgTxArgs {
@@ -47,8 +49,11 @@ pub struct JSONRPCClient {
 }
 
 impl JSONRPCClient {
-    pub fn new(uri: &str, network_id: u32, chain_id: String) -> Result<Self, Box<dyn
-    std::error::Error + Send + Sync>> {
+    pub fn new(
+        uri: &str,
+        network_id: u32,
+        chain_id: String,
+    ) -> Result<Self, Box<dyn std::error::Error + Send + Sync>> {
         let uri = Url::parse(uri)?.to_string();
         let token = uri.clone() + "/tokenapi";
         let parsed_token = Url::parse(&token)?;
@@ -75,7 +80,9 @@ impl JSONRPCClient {
         };
         let options = Options::new();
         let mut resp: SubmitMsgTxReply = SubmitMsgTxReply::default();
-        let _ = self.requester.send_request("submitMsgTx", &args, &mut resp, options);
+        let _ = self
+            .requester
+            .send_request("submitMsgTx", &args, &mut resp, options);
         Ok(resp.tx_id)
     }
 
@@ -87,7 +94,9 @@ impl JSONRPCClient {
         let args = GetBlockHeadersByHeightArgs { height, end };
         let options = Options::new();
         let mut resp: BlockHeadersResponse = BlockHeadersResponse::default();
-        let _ = self.requester.send_request("getBlockHeadersByHeight", &args, &mut resp, options);
+        let _ = self
+            .requester
+            .send_request("getBlockHeadersByHeight", &args, &mut resp, options);
         Ok(resp)
     }
 
@@ -98,8 +107,10 @@ impl JSONRPCClient {
     ) -> Result<BlockHeadersResponse, Box<dyn std::error::Error + Send + Sync>> {
         let args = GetBlockHeadersIDArgs { id, end };
         let options = Options::new();
-        let mut resp:  BlockHeadersResponse = BlockHeadersResponse::default();
-        let _ = self.requester.send_request("getBlockHeadersId", &args, &mut resp, options);
+        let mut resp: BlockHeadersResponse = BlockHeadersResponse::default();
+        let _ = self
+            .requester
+            .send_request("getBlockHeadersId", &args, &mut resp, options);
         Ok(resp)
     }
 
@@ -111,7 +122,9 @@ impl JSONRPCClient {
         let args = GetBlockHeadersByStartArgs { start, end };
         let options = Options::new();
         let mut resp: BlockHeadersResponse = BlockHeadersResponse::default();
-        let _ = self.requester.send_request("getBlockHeadersByStart", &args, &mut resp, options);
+        let _ = self
+            .requester
+            .send_request("getBlockHeadersByStart", &args, &mut resp, options);
         Ok(resp)
     }
 
@@ -123,7 +136,33 @@ impl JSONRPCClient {
         let args = GetBlockTransactionsByNamespaceArgs { height, namespace };
         let mut resp: SEQTransactionResponse = SEQTransactionResponse::default();
         let options = Options::new();
-        let _ = self.requester.send_request("getBlockTransactionsByNamespace", &args, &mut resp, options);
+        let _ = self.requester.send_request(
+            "getBlockTransactionsByNamespace",
+            &args,
+            &mut resp,
+            options,
+        );
+        Ok(resp)
+    }
+
+    pub fn get_storage_slot_data(
+        &self,
+        address_str: String,
+        slot: u64,
+    ) -> Result<StorageSlotResponse, Box<dyn std::error::Error + Send + Sync>> {
+        if slot > NUM_STATE_KEYS {
+            return Err("slot number must be less than number of state keys".into());
+        }
+        let slot_str: String = String::from("slot") + &slot.to_string();
+        let args = StorageSlotArgs {
+            address: address_str,
+            slot: slot_str,
+        };
+        let mut resp: StorageSlotResponse = StorageSlotResponse::default();
+        let options = Options::new();
+        let _ = self
+            .requester
+            .send_request("storageSlot", &args, &mut resp, options);
         Ok(resp)
     }
 }

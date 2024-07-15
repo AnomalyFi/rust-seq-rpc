@@ -67,11 +67,11 @@ impl JSONRPCClient {
 
     pub fn submit_tx(
         &self,
-        chain_id: String,
-        network_id: u32,
         secondary_chain_id: Vec<u8>,
         data: Vec<u8>,
     ) -> Result<String, Box<dyn std::error::Error + Send + Sync>> {
+        let chain_id = self.chain_id.clone();
+        let network_id = self.network_id;
         let args = SubmitMsgTxArgs {
             chain_id,
             network_id,
@@ -88,12 +88,12 @@ impl JSONRPCClient {
 
     pub fn submit_transact_tx(
         &self,
-        chain_id: String,
-        network_id: u32,
         function_name: String,
         contract_address: String,
         input: Vec<u8>,
     ) -> Result<SubmitTransactTxReply, Box<dyn std::error::Error + Send + Sync>> {
+        let chain_id = self.chain_id.clone();
+        let network_id = self.network_id;
         let args = SubmitTransactTxArgs {
             chain_id,
             network_id,

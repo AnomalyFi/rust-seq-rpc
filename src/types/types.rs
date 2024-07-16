@@ -211,15 +211,15 @@ impl Default for GetBlockTransactionsByNamespaceArgs {
 pub struct StorageSlotArgs {
     #[serde(rename = "address")]
     pub address: String,
-    #[serde(rename = "slot")]
-    pub slot: String,
+    #[serde(rename = "slot", with = "serde_bytes_ng")]
+    pub slot: Vec<u8>,
 }
 
 impl Default for StorageSlotArgs {
     fn default() -> Self {
         Self {
             address: String::new(),
-            slot: String::new(),
+            slot: Vec::new(),
         }
     }
 }

@@ -1,5 +1,6 @@
 use crate::requester::requester::*;
 use crate::types::types::*;
+use base64::decode;
 use reqwest::Url;
 use serde::{Deserialize, Serialize};
 
@@ -169,7 +170,7 @@ impl JSONRPCClient {
     pub fn get_storage_slot_data(
         &self,
         address_str: String,
-        slot: String,
+        slot: Vec<u8>,
     ) -> Result<StorageSlotResponse, Box<dyn std::error::Error + Send + Sync>> {
         let args = StorageSlotArgs {
             address: address_str,
@@ -180,6 +181,7 @@ impl JSONRPCClient {
         let _ = self
             .requester
             .send_request("storageSlot", &args, &mut resp, options);
+        resp.data = decode(&resp.data).expect("Failed to decode base64");
         Ok(resp)
     }
 }

@@ -7,8 +7,10 @@ fn test_storage_slot() {
     let chain_id: String = "24rD8QqELL2RF9LkeZ2cZ4qyUbdBsj7VPQyXQnXjQVSccJCusC".to_string();
     let client = JSONRPCClient::new(uri, network_id, chain_id).unwrap();
     let address_str = "v2RWCQjGNxebmArs1TsBdCANHzWDMiEjDMavzKtEXabfGN7um".to_string();
-    let slot: u64 = 9;
-    let resp = client.get_storage_slot_data(address_str, slot).unwrap();
+    let slot = "slot9";
+    let resp = client
+        .get_storage_slot_data(address_str, slot.to_string())
+        .unwrap();
     let decoded_bytes = decode(&resp.data).expect("Failed to decode base64");
     let res_data = vec![13 as u8, 14, 16, 0];
     assert_eq!(decoded_bytes, res_data);

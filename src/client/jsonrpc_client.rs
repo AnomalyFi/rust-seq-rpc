@@ -3,8 +3,6 @@ use crate::types::types::*;
 use reqwest::Url;
 use serde::{Deserialize, Serialize};
 
-const NUM_STATE_KEYS: u64 = 1024;
-
 #[derive(Serialize, Deserialize, Debug)]
 pub struct SubmitMsgTxArgs {
     #[serde(rename = "chain_id")]
@@ -171,15 +169,11 @@ impl JSONRPCClient {
     pub fn get_storage_slot_data(
         &self,
         address_str: String,
-        slot: u64,
+        slot: String,
     ) -> Result<StorageSlotResponse, Box<dyn std::error::Error + Send + Sync>> {
-        if slot > NUM_STATE_KEYS {
-            return Err("slot number must be less than number of state keys".into());
-        }
-        let slot_str: String = String::from("slot") + &slot.to_string();
         let args = StorageSlotArgs {
             address: address_str,
-            slot: slot_str,
+            slot: slot,
         };
         let mut resp: StorageSlotResponse = StorageSlotResponse::default();
         let options = Options::new();

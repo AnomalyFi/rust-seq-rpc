@@ -90,6 +90,7 @@ impl JSONRPCClient {
         function_name: String,
         contract_address: String,
         input: Vec<u8>,
+        dynamic_state_slots: Vec<Vec<u8>>,
     ) -> Result<SubmitTransactTxReply, Box<dyn std::error::Error + Send + Sync>> {
         let chain_id = self.chain_id.clone();
         let network_id = self.network_id;
@@ -99,6 +100,7 @@ impl JSONRPCClient {
             function_name,
             contract_address,
             input,
+            dynamic_state_slots,
         };
         let options = Options::new();
         let mut resp: SubmitTransactTxReply = SubmitTransactTxReply::default();

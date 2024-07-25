@@ -88,7 +88,10 @@ pub struct SubmitTransactTxArgs {
     pub contract_address: String,
     #[serde(rename = "input")]
     pub input: Vec<u8>,
+    #[serde(rename = "dynamic_state_slots")]
+    pub dynamic_state_slots: Vec<Vec<u8>>,
 }
+
 impl Default for SubmitTransactTxArgs {
     fn default() -> Self {
         Self {
@@ -97,6 +100,7 @@ impl Default for SubmitTransactTxArgs {
             function_name: String::new(),
             contract_address: String::new(),
             input: Vec::new(),
+            dynamic_state_slots: Vec::new(),
         }
     }
 }
